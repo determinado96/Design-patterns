@@ -29,6 +29,7 @@ abstract class NotificationFactory {
 }
 
 // 4. Criadores Concretos sobrescrevem o método fábrica base para retornar um tipo diferente de produto.
+// IMPORTANTE: no factory method precisamos especificar as fábricas concretas para trocar o produto.
 class EmailNotificationFactory extends NotificationFactory {
   createNotification(): Notification {
     return new EmailNotification(); // cria produto específico
