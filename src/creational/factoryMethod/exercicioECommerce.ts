@@ -1,12 +1,10 @@
-// Interface de Pagamento
+// 1. O Produto declara a interface, que é comum a todos os objetos que podem ser produzidos pelo criador e suas subclasses.
 interface Payment {
   processPayment(): void;
   generateReceipt(): void;
 }
 
-// ------------------------ Implementações concretas ------------------------
-
-// Cartão de Crédito
+// 2. Produtos Concretos são implementações diferentes da interface do produto.
 class CartaoDeCredito implements Payment {
   private parcelas: number;
   private limite: number;
@@ -18,10 +16,12 @@ class CartaoDeCredito implements Payment {
 
   processPayment() {
     if (!this.validateCard()) {
-      throw new Error("Cartão inválido ou limite insuficiente.");
+      throw new Error('Cartão inválido ou limite insuficiente.');
     }
     const juros = this.calculateInterest();
-    console.log(`Pagamento processado no Cartão de Crédito em ${this.parcelas}x. Juros aplicados: R$${juros.toFixed(2)}.`);
+    console.log(
+      `Pagamento processado no Cartão de Crédito em ${this.parcelas}x. Juros aplicados: R$${juros.toFixed(2)}.`,
+    );
   }
 
   private validateCard(): boolean {
@@ -33,23 +33,26 @@ class CartaoDeCredito implements Payment {
   }
 
   generateReceipt() {
-    console.log(`Recibo Cartão: ${this.parcelas} parcelas. Total com juros: R$${(100 + this.calculateInterest()).toFixed(2)}`);
+    console.log(
+      `Recibo Cartão: ${this.parcelas} parcelas. Total com juros: R$${(100 + this.calculateInterest()).toFixed(2)}`,
+    );
   }
 }
 
-// Pix
 class Pix implements Payment {
   private chavePix: string;
 
-  constructor(chavePix: string = "123e4567-e89b-12d3-a456-426614174000") {
+  constructor(chavePix: string = '123e4567-e89b-12d3-a456-426614174000') {
     this.chavePix = chavePix;
   }
 
   processPayment() {
     if (!this.validatePix()) {
-      throw new Error("Chave Pix inválida.");
+      throw new Error('Chave Pix inválida.');
     }
-    console.log(`Transferência PIX realizada com sucesso para a chave ${this.chavePix}.`);
+    console.log(
+      `Transferência PIX realizada com sucesso para a chave ${this.chavePix}.`,
+    );
   }
 
   private validatePix(): boolean {
@@ -58,23 +61,28 @@ class Pix implements Payment {
   }
 
   generateReceipt() {
-    console.log(`Recibo PIX gerado. Chave: ${this.chavePix}, Timestamp: ${new Date().toISOString()}`);
+    console.log(
+      `Recibo PIX gerado. Chave: ${this.chavePix}, Timestamp: ${new Date().toISOString()}`,
+    );
   }
 }
 
-// Boleto Bancário
 class BoletoBancario implements Payment {
   private dataVencimento: Date;
 
-  constructor(dataVencimento: Date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) {
+  constructor(
+    dataVencimento: Date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  ) {
     this.dataVencimento = dataVencimento;
   }
 
   processPayment() {
     if (!this.validateDueDate()) {
-      throw new Error("Boleto com data de vencimento inválida.");
+      throw new Error('Boleto com data de vencimento inválida.');
     }
-    console.log(`Boleto registrado no banco. Vencimento: ${this.dataVencimento.toLocaleDateString()}`);
+    console.log(
+      `Boleto registrado no banco. Vencimento: ${this.dataVencimento.toLocaleDateString()}`,
+    );
   }
 
   private validateDueDate(): boolean {
@@ -82,23 +90,26 @@ class BoletoBancario implements Payment {
   }
 
   generateReceipt() {
-    console.log(`Recibo Boleto gerado. Linha digitável: 00190.00009 12345.678901 23456.789012 1 12340000010000`);
+    console.log(
+      `Recibo Boleto gerado. Linha digitável: 00190.00009 12345.678901 23456.789012 1 12340000010000`,
+    );
   }
 }
 
-// Carteira Digital
 class CarteiraDigital implements Payment {
   private provider: string;
 
-  constructor(provider: string = "Google Pay") {
+  constructor(provider: string = 'Google Pay') {
     this.provider = provider;
   }
 
   processPayment() {
     if (!this.authenticate()) {
-      throw new Error("Falha na autenticação da carteira digital.");
+      throw new Error('Falha na autenticação da carteira digital.');
     }
-    console.log(`Pagamento processado via Carteira Digital (${this.provider}).`);
+    console.log(
+      `Pagamento processado via Carteira Digital (${this.provider}).`,
+    );
   }
 
   private authenticate(): boolean {
@@ -107,11 +118,13 @@ class CarteiraDigital implements Payment {
   }
 
   generateReceipt() {
-    console.log(`Recibo gerado para Carteira Digital (${this.provider}). ID da transação: ${Math.floor(Math.random() * 1000000)}`);
+    console.log(
+      `Recibo gerado para Carteira Digital (${this.provider}). ID da transação: ${Math.floor(Math.random() * 1000000)}`,
+    );
   }
 }
 
-// ------------------------ Factory Method ------------------------
+// 3. A classe Criador declara o método fábrica que retorna novos objetos produto.
 abstract class PaymentFactory {
   protected payment: Payment;
 
@@ -122,17 +135,22 @@ abstract class PaymentFactory {
   protected abstract createPayment(): Payment;
 
   processPayment() {
+    // polimorfismo por sobrescrita (o método que será executado é decidido em tempo de execução, baseado no objeto real).
     this.payment.processPayment();
   }
 
   generateReceipt() {
+    // polimorfismo por sobrescrita (o método que será executado é decidido em tempo de execução, baseado no objeto real).
     this.payment.generateReceipt();
   }
 }
 
-// Fábricas concretas
+// 4. Criadores Concretos sobrescrevem o método fábrica base para retornar um tipo diferente de produto.
 class CartaoDeCreditoFactory extends PaymentFactory {
-  constructor(private parcelas: number = 1, private limite: number = 5000) {
+  constructor(
+    private parcelas: number = 1,
+    private limite: number = 5000,
+  ) {
     super();
   }
 
@@ -142,7 +160,9 @@ class CartaoDeCreditoFactory extends PaymentFactory {
 }
 
 class PixFactory extends PaymentFactory {
-  constructor(private chavePix: string = "123e4567-e89b-12d3-a456-426614174000") {
+  constructor(
+    private chavePix: string = '123e4567-e89b-12d3-a456-426614174000',
+  ) {
     super();
   }
 
@@ -152,7 +172,11 @@ class PixFactory extends PaymentFactory {
 }
 
 class BoletoBancarioFactory extends PaymentFactory {
-  constructor(private dataVencimento: Date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) {
+  constructor(
+    private dataVencimento: Date = new Date(
+      Date.now() + 7 * 24 * 60 * 60 * 1000,
+    ),
+  ) {
     super();
   }
 
@@ -162,7 +186,7 @@ class BoletoBancarioFactory extends PaymentFactory {
 }
 
 class CarteiraDigitalFactory extends PaymentFactory {
-  constructor(private provider: string = "Google Pay") {
+  constructor(private provider: string = 'Google Pay') {
     super();
   }
 
@@ -171,7 +195,7 @@ class CarteiraDigitalFactory extends PaymentFactory {
   }
 }
 
-// ------------------------ Factory Central ------------------------
+// 4. Orquestrador
 class PaymentFactoryProducer {
   private static factories: Record<string, PaymentFactory> = {
     credit_card: new CartaoDeCreditoFactory(),
@@ -191,19 +215,18 @@ class PaymentFactoryProducer {
   }
 }
 
-// ------------------------ Uso ------------------------
-const cartao = PaymentFactoryProducer.createFactory("credit_card");
+const cartao = PaymentFactoryProducer.createFactory('credit_card');
 cartao.processPayment();
 cartao.generateReceipt();
 
-const pix = PaymentFactoryProducer.createFactory("pix");
+const pix = PaymentFactoryProducer.createFactory('pix');
 pix.processPayment();
 pix.generateReceipt();
 
-const boleto = PaymentFactoryProducer.createFactory("boleto");
+const boleto = PaymentFactoryProducer.createFactory('boleto');
 boleto.processPayment();
 boleto.generateReceipt();
 
-const carteira = PaymentFactoryProducer.createFactory("wallet");
+const carteira = PaymentFactoryProducer.createFactory('wallet');
 carteira.processPayment();
 carteira.generateReceipt();
