@@ -19,7 +19,7 @@ class LightButton implements IButton {
   constructor(
     private color = 'white',
     private size = 'medium',
-  ) {}
+  ) { }
   render() {
     console.log(`Light IButton - Cor: ${this.color}, Tamanho: ${this.size}`);
   }
@@ -33,7 +33,7 @@ class LightTextBox implements ITextBox {
   constructor(
     private color = 'white',
     private width = 200,
-  ) {}
+  ) { }
   render() {
     console.log(
       `Light ITextBox - Cor: ${this.color}, Largura: ${this.width}px`,
@@ -50,7 +50,7 @@ class LightSlider implements ISlider {
   constructor(
     private color = 'lightgray',
     private max = 100,
-  ) {}
+  ) { }
   render() {
     console.log(`Light ISlider - Cor: ${this.color}, Max: ${this.max}`);
   }
@@ -64,7 +64,7 @@ class DarkButton implements IButton {
   constructor(
     private color = 'black',
     private size = 'medium',
-  ) {}
+  ) { }
   render() {
     console.log(`Dark IButton - Cor: ${this.color}, Tamanho: ${this.size}`);
   }
@@ -78,7 +78,7 @@ class DarkTextBox implements ITextBox {
   constructor(
     private color = 'black',
     private width = 200,
-  ) {}
+  ) { }
   render() {
     console.log(`Dark ITextBox - Cor: ${this.color}, Largura: ${this.width}px`);
   }
@@ -93,7 +93,7 @@ class DarkSlider implements ISlider {
   constructor(
     private color = 'darkgray',
     private max = 100,
-  ) {}
+  ) { }
   render() {
     console.log(`Dark ISlider - Cor: ${this.color}, Max: ${this.max}`);
   }
@@ -136,10 +136,12 @@ class DarkThemeFactory implements IUIFactory {
 }
 
 function renderUI(factory: IUIFactory) {
+  // Polimorfismo IUIFactory pode ser -> LightThemeFactory, DarkThemeFactory
   const button = factory.createButton();
   const textBox = factory.createTextBox();
   const slider = factory.createSlider();
 
+  // Polimorfismo nos PRODUTOS
   button.render();
   button.click();
 
