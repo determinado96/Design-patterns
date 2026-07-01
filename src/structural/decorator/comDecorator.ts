@@ -14,7 +14,7 @@ class SimpleCoffee implements Coffee {
 }
 
 abstract class CoffeeDecorator implements Coffee {
-  constructor(protected coffee: Coffee) {}
+  constructor(protected coffee: Coffee) { }
 
   getDescription(): string {
     return this.coffee.getDescription();

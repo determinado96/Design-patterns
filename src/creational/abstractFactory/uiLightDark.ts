@@ -103,6 +103,7 @@ class DarkSlider implements ISlider {
   }
 }
 
+// Ponto negativo desse padrão: se criarmos um novo tipo de produto, teremos que alterar a interface da fábrica abstrata e todas as fábricas concretas. Isso viola o princípio aberto/fechado, que diz que devemos ser capazes de estender o comportamento de uma classe sem modificá-la.
 // 3. A interface Fábrica Abstrata declara um conjunto de métodos para criação de cada um dos produtos abstratos.
 interface IUIFactory {
   createButton(): IButton;
